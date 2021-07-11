@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Soap Calculator</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<script>
+
+		db={
+			"橄欖油":{"svs":0.134,"ins":109},
+			"酪梨油":{"svs":0.134,"ins":99},
+			"米糠油":{"svs":0.128,"ins":70},
+			"甜杏仁油":{"svs":0.136,"ins":97},
+			"山茶花/苦茶油":{"svs":0.136,"ins":108},
+			"澳洲胡桃油":{"svs":0.136,"ins":119},
+			"榛果油":{"svs":0.136,"ins":94},
+			"芝麻油":{"svs":0.133,"ins":81},
+			"金黃荷荷巴油":{"svs":0.069,"ins":11},
+			"蓖麻油":{"svs":0.128,"ins":95},
+			"印度苦楝油":{"svs":0.139,"ins":124},
+			"月桂果油":{"svs":0.141,"ins":124},
+			"椰子油":{"svs":0.187,"ins":258},
+			"棕櫚油":{"svs":0.141,"ins":145},
+			"紅棕櫚油":{"svs":0.141,"ins":145},
+			"棕櫚核仁油":{"svs":0.156,"ins":227},
+			"乳油木果脂":{"svs":0.128,"ins":116},
+			"可可脂":{"svs":0.137,"ins":157},
+			"白油":{"svs":0.136,"ins":115},
+			"馬油":{"svs":0.14,"ins":111},
+			"紅花籽油":{"svs":0.136,"ins":47},
+			"杏桃核仁油":{"svs":0.1364,"ins":81}
+		};
+
+		function initSele(sele){
+			//alert("in init");
+			
+			var c=0;
+			sele.options[c]=new Option("",null);
+			c+=1;
+			for(var oil in db)
+			{
+				sele.options[c]=new Option(oil,oil);
+				
+				c+=1;
+
+			}
+			sele.selectedIndex=0;
+			//alert(sele.options[sele.selectedIndex].value);
+			
+		}
+
+		function percentEdited(caller)
+		{
+			//alert("percent edited"+caller.value);
+			//alert("caller.name="+caller.name);
+			corMassName="m"+caller.name.slice(1);
+			//alert("corMassName="+corMassName);
+			totalMass=parseFloat(document.getElementsByName("totalMassTF")[0].value);
+			//alert("totalMass="+totalMass);
+			p=parseFloat(caller.value);
+			//alert("p="+p);
+			m=totalMass*p/100;
+			//alert(m);
+			document.getElementsByName(corMassName)[0].value=m;
+			
+		}
+
+		function massEdited(caller)
+		{
+			//alert("mass edited");
+			corPercentName="p"+caller.name.slice(1);
+			totalMass=parseFloat(document.getElementsByName("totalMassTF")[0].value);
+			m=parseFloat(caller.value);
+			p=m/totalMass*100;
+			document.getElementsByName(corPercentName)[0].value=p;
+		}
+
+		function calculate()
+		{
+			var percentageAccu=0.0;
+			var INSResult=0.0;
+			var baseWight=0.0;
+			var percentAcc=0.0;
+			totalMass=parseFloat(document.getElementsByName("totalMassTF")[0].value);
+			waterMulti=parseFloat(document.getElementsByName("waterMultipleTF")[0].value);
+			var outputMessage="";
+			for (var i = 1;i<=10; i++)
+			{
+				seleID="oil"+i.toString();
+				oilname=document.getElementById(seleID).value;
+				if(oilname!="null")
+				{
+					//alert(oilname);
+					percentName="p"+i.toString();
+					percent=document.getElementsByName(percentName)[0].value;
+					percentAcc+=percent;
+					massName="m"+i.toString();
+					mass=document.getElementsByName(massName)[0].value;
+					outputMessage+=(oilname+":"+mass+"g\n");
+					INSResult+=percent*db[oilname].ins/100;
+					//alert(INSResult);
+					//alert("ins:"+db[oilname].ins);
+					baseWight+=mass*db[oilname].svs;
+				}
+			}
+			if(percentAcc!=100)
+			{
+				alert("非100%");
+			}
+			outputMessage+=("\nINS:"+INSResult.toFixed(3)+"\n鹼重:"+baseWight+"g\n");
+			outputMessage+=("需加液鹼:"+(baseWight/0.45).toFixed	(3)+'g\n');
+			water2add=baseWight*(1+waterMulti)-baseWight/0.45;
+			outputMessage+=("45%液鹼，"+waterMulti+"倍水，須加水:"+water2add.toFixed(3)+'g');
+			document.getElementsByName("resultTextarea")[0].value=outputMessage;
+		}
+
+	</script>
+
+	<form id=mainForm>
+		總重量: <input type="text" name="totalMassTF" value="1000"> g,  水倍數: <input type="text" name="waterMultipleTF" value="2.3"> 倍<br>
+		Oil  1: 
+		<select id=oil1>
+		</select>
+		百分比: <input type="text" name="p1" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m1" onchange="massEdited(this)"> g
+		<br>
+		Oil  2: 
+		<select id=oil2>
+		</select>
+		百分比: <input type="text" name="p2" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m2" onchange="massEdited(this)"> g
+		<br>
+		Oil  3: 
+		<select id=oil3>
+		</select>
+		百分比: <input type="text" name="p3" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m3" onchange="massEdited(this)"> g
+		<br>
+		Oil  4: 
+		<select id=oil4>
+		</select>
+		百分比: <input type="text" name="p4" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m4" onchange="massEdited(this)"> g
+		<br>
+		Oil  5: 
+		<select id=oil5>
+		</select>
+		百分比: <input type="text" name="p5" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m5" onchange="massEdited(this)"> g
+		<br>
+		Oil  6: 
+		<select id=oil6>
+		</select>
+		百分比: <input type="text" name="p6" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m6" onchange="massEdited(this)"> g
+		<br>
+		Oil  7: 
+		<select id=oil7>
+		</select>
+		百分比: <input type="text" name="p7" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m7" onchange="massEdited(this)"> g
+		<br>
+		Oil  8: 
+		<select id=oil8>
+		</select>
+		百分比: <input type="text" name="p8" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m8" onchange="massEdited(this)"> g
+		<br>
+		Oil  9: 
+		<select id=oil9>
+		</select>
+		百分比: <input type="text" name="p9" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m9" onchange="massEdited(this)"> g
+		<br>
+		Oil 10: 
+		<select id=oil10>
+		</select>
+		百分比: <input type="text" name="p10" onchange="percentEdited(this)"> %,    
+		重量: <input type="text" name="m10" onchange="massEdited(this)"> g
+		<br><br>
+		<input type="button" value="Calculate!" onclick="calculate()" style="width:90px;height:30px;font-size:15px;"><br><br>
+		<textarea name="resultTextarea" cols="50" rows="11">
+
+		</textarea>
+
+	</form>
+
+	<script>
+		seles=document.getElementsByTagName("select");
+		for(var i=0;i<seles.length;i++) 
+		{
+			initSele(seles[i]);
+		}
+	</script>
+
+</body>
+</html>
