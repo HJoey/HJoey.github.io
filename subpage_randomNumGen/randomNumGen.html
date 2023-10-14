@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <title>my-first-website</title>
+  <LINK href="styles_randomNumGen.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <script src="scripts.js"></script>
+  
+  <h1>Random Number Generator</h1>
+  <h2>Range based generation</h2>
+    <br>
+    <label>Start: </label>
+    <input type="text" id="startNum" name="startNum" value="1"><br><br>
+    <label>End: </label>
+    <input type="text" id="endNum" name="endNum" value="50"><br><br>
+    <label id="rangeBasedRes">Result: </label><br><br>
+    <button type="button" onclick="setRangeBasedRandNum()">
+        Generate
+    </button>
+
+  <br>
+  <h2>Digits based generation</h2>
+    <br>
+    <label>Num digits: </label>
+    <input type="text" id="numDigits" name="numDigits" value="5"><br><br>
+    <label id="digitsBasedRes">Result: </label><br><br>
+    <button type="button" onclick="setDigitsBasedRandNum()">
+        Generate
+    </button>
+
+</body>
+</html>
